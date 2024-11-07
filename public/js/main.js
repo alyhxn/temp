@@ -1,120 +1,4 @@
-class SpeechHandler {
-    constructor() {
-      this.synth = window.speechSynthesis;
-      this.isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
-      this.mode = 0; // 0: stopped, 1: playing, 2: paused
-      this.playButton = document.querySelector('#play-action > span');
-      this.sentences = [];
-      this.currentIndex = 0;
-      this.currentUtterance = null;
-      
-      // Bind methods
-      this.cleanup = this.cleanup.bind(this);
-      this.readNext = this.readNext.bind(this);
-      
-      // Handle page visibility
-      document.addEventListener('visibilitychange', this.cleanup);
-    }
-  
-    cleanup() {
-      this.synth.cancel();
-      this.currentIndex = 0;
-      this.mode = 0;
-      this.updatePlayButton('play');
-      if (this.currentUtterance) {
-        this.currentUtterance.onend = null;
-      }
-      this.currentUtterance = null;
-    }
-  
-    updatePlayButton(state) {
-      if (state === 'play') {
-        this.playButton.classList.remove('fa-pause');
-        this.playButton.classList.add('fa-play');
-      } else {
-        this.playButton.classList.remove('fa-play');
-        this.playButton.classList.add('fa-pause');
-      }
-    }
-  
-    extractText() {
-      let text = '';
-      const divs = document.querySelectorAll("div.header, div.description");
-      divs.forEach(div => text += '\n' + div.innerText);
-      
-      return text
-        .split('\n')
-        .filter(line => line.trim())
-        .flatMap(line => {
-          const lineSentences = line.match(/[^.!?]+[.!?]+/g);
-          return lineSentences || [line];
-        });
-    }
-  
-    readNext() {
-      if (this.currentIndex < this.sentences.length && this.mode === 1) {
-        this.currentUtterance = new SpeechSynthesisUtterance(this.sentences[this.currentIndex]);
-        this.currentUtterance.onend = this.readNext;
-        this.currentUtterance.lang = "pt-PT";
-        this.currentUtterance.rate = 1;
-        
-        // Firefox-specific handling
-        if (this.isFirefox) {
-          this.currentUtterance.onend = () => {
-            setTimeout(this.readNext, 50); // Add small delay for Firefox
-          };
-        } else {
-          this.currentUtterance.onend = this.readNext;
-        }
-        
-        this.synth.speak(this.currentUtterance);
-        this.currentIndex++;
-      } else if (this.currentIndex >= this.sentences.length) {
-        this.cleanup();
-      }
-    }
-  
-    toggleSpeech() {
-      if (this.mode === 0) {
-        // Start reading
-        this.sentences = this.extractText();
-        this.currentIndex = 0;
-        this.mode = 1;
-        this.updatePlayButton('pause');
-        this.readNext();
-      }
-      else if (this.mode === 1) {
-        // Pause reading
-        if (this.isFirefox) {
-          this.synth.cancel(); // For Firefox, we need to cancel
-        } else {
-          this.synth.pause();
-        }
-        this.mode = 2;
-        this.updatePlayButton('play');
-      }
-      else if (this.mode === 2) {
-        // Resume reading
-        this.mode = 1;
-        this.updatePlayButton('pause');
-        if (this.isFirefox) {
-          this.readNext(); // For Firefox, restart from current sentence
-        } else {
-          this.synth.resume();
-        }
-      }
-    }
-  
-    cancel() {
-      this.cleanup();
-    }
-  
-    destroy() {
-      document.removeEventListener('visibilitychange', this.cleanup);
-      this.cleanup();
-    }
-  }
-  
+
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -193,15 +77,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // responsiveVoice.speak('Relatório da Versão Portuguesa do Michigan Hand Outcomes Questionnaire (MHQ)', 'Portuguese Female')
     }
 
-    const speechHandler = new SpeechHandler();
+    const btn = document.querySelector('#play-action')
+    window.addEventListener('message', (event) => {
+      if (event.data?.type !== 'TRINITY_TTS') return;
+      if (event.data.value.action === 'injectorImp') {
+        console.info('Trinity Audio player injector script is loaded!');
+        btn.style.display = 'flex'
+      }
+    });
+    const mode = true
+    const btn_icon = btn.querySelector('span')
     function read () {
-        speechHandler.toggleSpeech();
+      if(mode){
+        window.TRINITY_PLAYER.api.play('2900019612');
+        btn_icon.classList.remove('fa-pause')
+        btn_icon.classList.add('fa-play')
+      }
+      else{
+        window.TRINITY_PLAYER.api.pause('2900019612');
+        btn_icon.classList.remove('fa-play')
+        btn_icon.classList.add('fa-pause')
+      }
     }
-
     // Attach the downloadPDF function to both buttons
     document.getElementById('download-summary').addEventListener('click', downloadPDF);
     document.getElementById('download-action').addEventListener('click', downloadPDF);
-    document.getElementById('play-action').addEventListener('click', read);
+    btn.addEventListener('click', read);
     // Clean up when page unloads
     window.addEventListener('unload', () => {
         speechHandler.destroy();
