@@ -92,14 +92,14 @@ document.addEventListener('DOMContentLoaded', function() {
         btn_icon.classList.remove('fa-pause')
         btn_icon.classList.add('fa-play')
         mode = false
-        window.TRINITY_PLAYER.api.play('2900019612');
+        window.TRINITY_PLAYER.api.play('c04191a6a01edb875ecd1b76011bbbb4');
         
       }
       else{
         btn_icon.classList.remove('fa-play')
         btn_icon.classList.add('fa-pause')
         mode = true
-        window.TRINITY_PLAYER.api.pause('2900019612');
+        window.TRINITY_PLAYER.api.pause('c04191a6a01edb875ecd1b76011bbbb4');
       }
     }
     // Attach the downloadPDF function to both buttons
