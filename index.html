@@ -12,21 +12,7 @@
     <title>Michigan Hand Outcomes Questionnaire</title>
 </head>
 <body>
-    <script>
-        const scriptEl = document.createElement('script');
-        scriptEl.setAttribute('fetchpriority', 'high');
-        scriptEl.setAttribute('charset', 'UTF-8');
-        
-        const scriptURL = new URL('https://trinitymedia.ai/player/trinity/2900019612/?');
-        scriptURL.searchParams.set('pageURL', window.location.href);
-        
-        scriptEl.src = scriptURL.toString(); 
-        
-        document.currentScript.parentNode.insertBefore(scriptEl, document.currentScript); 
-    </script>
-    <div class="trinity-tts-pb" dir="ltr" style="font: 12px / 18px Verdana, Arial; height: 80px; line-height: 80px; text-align: left; margin: 0 0 0 82px;">
-            <strong style="font-weight: 400">Getting your <a href="//trinityaudio.ai" style="color: #4b4a4a; text-decoration: none; font-weight: 700;">Trinity Audio</a> player ready...</strong>
-    </div>
+
     <div class="main-wrapper">
 
         <!-- Main Header -->
@@ -367,7 +353,7 @@
 
         <!-- Action Buttons Container -->
         <div class="action-buttons-container">
-            <div id="play-action" class="action-button">
+            <div style="display: none;" id="play-action" class="action-button">
                 <span class="fas fa-play"></span>
             </div>
             <div id="download-action" class="action-button">
@@ -443,6 +429,7 @@
         </div>
 
     </div>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=BW5CXPY5"></script>
     <script src="./public/js/main.js"></script>
     <!-- Include html2pdf.js library -->
 
