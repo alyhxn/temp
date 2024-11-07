@@ -167,7 +167,9 @@ html, body{
 .btn-text:hover{
     filter: brightness(1.5);
 }
-
+.trinity-player-wrapper{
+    display: none;
+}
 
 
 
