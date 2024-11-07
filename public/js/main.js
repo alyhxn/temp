@@ -81,30 +81,29 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('message', (event) => {
       if (event.data?.type !== 'TRINITY_TTS') return;
       if (event.data.value.action === 'injectorImp') {
-        console.info('Trinity Audio player injector script is loaded!');
+        console.info('Trinity Audio player injector script is loaded!', window.TRINITY_PLAYER);
         btn.style.display = 'flex'
       }
     });
-    const mode = true
+    let mode 
     const btn_icon = btn.querySelector('span')
     function read () {
       if(mode){
-        window.TRINITY_PLAYER.api.play('2900019612');
         btn_icon.classList.remove('fa-pause')
         btn_icon.classList.add('fa-play')
+        mode = false
+        window.TRINITY_PLAYER.api.play('2900019612');
+        
       }
       else{
-        window.TRINITY_PLAYER.api.pause('2900019612');
         btn_icon.classList.remove('fa-play')
         btn_icon.classList.add('fa-pause')
+        mode = true
+        window.TRINITY_PLAYER.api.pause('2900019612');
       }
     }
     // Attach the downloadPDF function to both buttons
     document.getElementById('download-summary').addEventListener('click', downloadPDF);
     document.getElementById('download-action').addEventListener('click', downloadPDF);
     btn.addEventListener('click', read);
-    // Clean up when page unloads
-    window.addEventListener('unload', () => {
-        speechHandler.destroy();
-    });
 });
