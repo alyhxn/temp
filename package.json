@@ -1,0 +1,42 @@
+{
+  "name": "temp",
+  "version": "1.0.0",
+  "description": "Playproject.io official landing page",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "budo web/demo.js:bundle.js --dir ./ --live --open",
+    "build": "browserify web/demo.js -o bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fionataeyang/playproject-io.github.io.git"
+  },
+  "keywords": [
+    "playproject.io",
+    "dweb",
+    "infrastructure",
+    "blockchain",
+    "ethereum",
+    "datdot",
+    "web",
+    "development",
+    "smart",
+    "contract",
+    "codes",
+    "smart",
+    "contract",
+    "UI"
+  ],
+  "author": "Playproject.io",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fionataeyang/playproject-io.github.io/issues"
+  },
+  "homepage": "https://github.com/fionataeyang/playproject-io.github.io#readme",
+  "devDependencies": {
+    "budo": "^11.6.3"
+  },
+  "dependencies": {
+    "rellax": "^1.12.0"
+  }
+}
