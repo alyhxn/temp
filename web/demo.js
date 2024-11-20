@@ -18,9 +18,7 @@ function fallback_module () { // -> set database defaults or load from database
 function fallback_instance () {
   return {
     _: {
-      "app": {
-        0: override
-      }
+      "app": {}
     },
     inputs: {
       "demo.css": {

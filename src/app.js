@@ -11,6 +11,7 @@ function fallback_module () {
   return {
     _: {
       'topnav': {},
+      'topnav#1': {},
       'theme_widget': {},
       'header': {},
       'footer': {}
@@ -20,7 +21,10 @@ function fallback_module () {
 function fallback_instance () {
   return {
     _: {
-      'topnav': {},
+      'topnav': {
+        0: override
+      },
+      'topnav#1': {},
       'theme_widget': {},
       'header': {},
       'footer': {}
@@ -32,14 +36,16 @@ function fallback_instance () {
     }
   }
 }
-function override ([topnav]) {
+function override ([topnav], path) {
   const data = topnav()
-  console.log(data)
-  data['topnav.json'].data.links.push({
+  console.log(data, path)
+  data.inputs['topnav.json'].data.links.push({
     "id": "app",
     "text": "app",
     "url": "app"
   })
+  data.inputs['topnav#1.json'] = data.inputs['topnav.json']
+  delete data.inputs['topnav.json']
   return data
 }
 /******************************************************************************
@@ -57,6 +63,8 @@ const modules = {
 //  our_contributors : require('our_contributors'),
 [sub_modules['footer']]  : require('footer'),
 }
+delete require.cache[require.resolve('topnav')]
+modules[sub_modules['topnav#1']] = require('topnav')
 module.exports = app
 
 async function app (opts) {
