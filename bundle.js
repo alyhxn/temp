@@ -4,5 +4,5 @@
 const STATE = require('STATE')
 
 
-console.log(STATE, 'hi')
+console.log('Hello: ', STATE)
 },{"STATE":1}]},{},[2]);

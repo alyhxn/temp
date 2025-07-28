@@ -1,4 +1,4 @@
 const STATE = require('STATE')
 
 
-console.log(STATE)
+console.log('Hello: ', STATE)
